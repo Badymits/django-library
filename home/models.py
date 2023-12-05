@@ -5,6 +5,7 @@ custom_user = settings.AUTH_USER_MODEL
 
 
 # Create your models here.
+    
 class Book(models.Model):
     
     STATUS = (
@@ -28,16 +29,15 @@ class Author(models.Model):
     books               = models.ForeignKey(Book, related_name='+', on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
-        return self.name
+        return str(self.name)
     
-
 class Genre(models.Model):
     
     # A tag to categorize (such as sports, kitchen, cleaning, etc..) the orders
     name                = models.CharField(max_length=200, null=True)
     
     def __str__(self):
-        return self.name
+        return str(self.name)
     
 
 # this represents books that have been borrowed/rented by users 
