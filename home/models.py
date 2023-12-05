@@ -1,3 +1,72 @@
 from django.db import models
+from django.conf import settings
+
+custom_user = settings.AUTH_USER_MODEL
+
 
 # Create your models here.
+class Book(models.Model):
+    
+    STATUS = (
+        ('Available', 'Available'),
+        ('Unavailable', 'Unavailable')
+    )
+    
+    title               = models.CharField(max_length=255)
+    author              = models.ForeignKey('home.Author',  on_delete=models.CASCADE, blank=True, null=True)
+    genre               = models.ManyToManyField('home.Genre')
+    summary             = models.CharField(max_length=599, null=True, blank=True)
+    status              = models.CharField(choices=STATUS, max_length=255)
+    book_image          = models.ImageField(upload_to='images', blank=True, null=True)
+    
+    def __str__(self):
+        return self.title
+    
+class Author(models.Model):
+    
+    name                = models.CharField(max_length=255)
+    books               = models.ForeignKey(Book, related_name='+', on_delete=models.CASCADE, blank=True, null=True)
+    
+    def __str__(self):
+        return self.name
+    
+
+class Genre(models.Model):
+    
+    # A tag to categorize (such as sports, kitchen, cleaning, etc..) the orders
+    name                = models.CharField(max_length=200, null=True)
+    
+    def __str__(self):
+        return self.name
+    
+
+# this represents books that have been borrowed/rented by users 
+class CheckedOutBooks(models.Model):
+    
+    STATUS = (
+        ('Borrowed', 'Borrowed'),
+        ('Returned', 'Returned'),
+        ('Late', 'Late'),
+        ('Out for Delivery', 'Out for Delivery'),
+        ('Delivered', 'Delivered')
+    )
+    
+    book                = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user                = models.ForeignKey(custom_user, on_delete=models.CASCADE)
+    borrowed_date       = models.DateTimeField(auto_now_add=True)
+    
+    # this is to keep track of whether the user has been returning it on time or is late
+    returned_date       = models.DateTimeField()
+    due_date            = models.DateTimeField()
+    
+    status              = models.CharField(choices=STATUS, max_length=255)
+    
+    def __str__(self):
+        
+        return f'{self.book} due date: {self.due_date}'
+    
+
+# class Cart(models.Model):
+    
+#     book                = models.ForeignKey(Book, on_delete=models.CASCADE)
+    
