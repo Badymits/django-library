@@ -8,7 +8,7 @@ from rest_framework import generics
 
 
 # Create your views here.
-class BookList(mixins.ListModelMixin, generics.GenericAPIView):
+class BookListView(mixins.ListModelMixin, generics.GenericAPIView):
     
     queryset = Book.objects.all()
     serializer_class = BookSerializer
