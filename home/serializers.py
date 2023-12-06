@@ -19,6 +19,8 @@ class BookSerializer(serializers.ModelSerializer):
     
     # this fixes the problem where it only shows the foreignkey ID, not the returned name string
     author          = AuthorSerializer(read_only=True)
+    
+    # many to many fields require many= parameter. By doing this, drf will show the actual object instead of null
     genre           = GenreSerializer(read_only=True, many=True)
     
     class Meta:
