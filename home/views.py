@@ -15,3 +15,11 @@ class BookListView(mixins.ListModelMixin, generics.GenericAPIView):
     
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+    
+class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    
+    def get(self, request, *args, **kwargs):
+        print(request)
+        return self.retrieve(request, *args, **kwargs)
