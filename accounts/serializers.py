@@ -54,7 +54,7 @@ class AccountRegisterSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
     
-    # this is only to set the password for the user since the set password in the model does not work
+    # this is only to set the password for the user since the set password in the model.py does not work
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
