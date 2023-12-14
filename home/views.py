@@ -34,7 +34,6 @@ class BookGenreListView(mixins.ListModelMixin, generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         
         queryset = self.get_queryset()
-        print(queryset)
         
         # the query set needs to be serialized first so that it can be sent  to the frontend
         serializer_class = BookSerializer(queryset, many=True)  
@@ -43,7 +42,7 @@ class BookGenreListView(mixins.ListModelMixin, generics.GenericAPIView):
         
         return Response(data=data)
         
-    # this method is called inside of get
+    # this method is called inside of get, we just need to override it
     def get_queryset(self):
         print('Hello')
         queryset = Book.objects.all()
