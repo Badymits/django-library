@@ -5,6 +5,7 @@ from .serializers import BookSerializer
 
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -23,3 +24,38 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get(self, request, *args, **kwargs):
         print(request)
         return self.retrieve(request, *args, **kwargs)
+    
+# create class that would get books based on genre
+class BookGenreListView(mixins.ListModelMixin, generics.GenericAPIView):
+    
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer(queryset, many=True)  
+    
+    def get(self, request, *args, **kwargs):
+        
+        queryset = self.get_queryset()
+        print(queryset)
+        
+        # the query set needs to be serialized first so that it can be sent  to the frontend
+        serializer_class = BookSerializer(queryset, many=True)  
+        
+        data={'search_results': serializer_class.data, 'message': 'Successfully filtered'}
+        
+        return Response(data=data)
+        
+    # this method is called inside of get
+    def get_queryset(self):
+        print('Hello')
+        queryset = Book.objects.all()
+        genre_filter = self.request.query_params.get('genre')
+        
+        # verify first if not empty
+        if genre_filter is not None:
+            return Book.objects.filter(genre__name=genre_filter)
+        
+        return queryset
+    
+        
+    
+    
+    
