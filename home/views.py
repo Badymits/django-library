@@ -23,22 +23,22 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
     
     def get(self, request, *args, **kwargs):
-        #print(request)
+        #print('request: ',request)
         return self.retrieve(request, *args, **kwargs)
     
 # create class that would get books based on genre
 class BookSearchListView(mixins.ListModelMixin, generics.GenericAPIView):
     
     queryset = Book.objects.all()
-    serializer_class = BookSerializer(queryset, many=True) 
+    serializer_class = BookSerializer 
     
     def get(self, request, *args, **kwargs):
         
         queryset = self.get_queryset()
 
         # the query set needs to be serialized first so that it can be sent  to the frontend
-        serializer_class = BookSerializer(queryset, many=True)  
-        
+        serializer_class = BookSerializer(queryset, many=True, context={'request': request}) # include request for the method in serializer  
+        #print(serializer_class.data)
         data={'search_results': serializer_class.data, 'message': 'Successfully filtered'}
         
         return Response(data=data)
