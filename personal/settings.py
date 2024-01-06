@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import environ
 from pathlib import Path
 from datetime import timedelta
 
@@ -112,6 +113,11 @@ SIMPLE_JWT = {
 }
 
 ROOT_URLCONF = 'personal.urls'
+
+# access environment variables
+env = environ.Env()
+environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')
+SECRET_KEY = env('SECRET_KEY')
 
 TEMPLATES = [
     {
