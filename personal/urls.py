@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('auth/', include('accounts.urls')),
+    path('payments/', include('payments.urls')),
     
     # jwt routes
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
