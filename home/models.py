@@ -19,6 +19,8 @@ class Book(models.Model):
     summary             = models.CharField(max_length=599, null=True, blank=True)
     status              = models.CharField(choices=STATUS, max_length=255)
     book_image          = models.ImageField(upload_to='images', blank=True, null=True)
+    rent_price          = models.DecimalField(default=0.00, max_digits=10, decimal_places=2, blank=True, null=True)
+    purchase_price      = models.DecimalField(default=0.00, max_digits=10, decimal_places=2, blank=True, null=True) 
     
     def __str__(self):
         return self.title
@@ -66,7 +68,14 @@ class CheckedOutBooks(models.Model):
         return f'{self.book} due date: {self.due_date}'
     
 
-# class Cart(models.Model):
+#class BooksInCart(models.Model):
+
+    # user                = models.ForeignKey(custom_user, on_delete=models.CASCADE)
+    # book_in_cart        = models.ForeignKey(Book, on_delete=models.CASCADE)
     
-#     book                = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+# class CartOrder(models.Model):
     
+#     user                 = models.ForeignKey(custom_user, on_delete=models.CASCADE)
+#     books                = models.ManyToMany(Book, on_delete=models.CASCADE)
+#     total                = models.CharField()    
