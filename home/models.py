@@ -70,12 +70,12 @@ class CheckedOutBooks(models.Model):
 
 #class BooksInCart(models.Model):
 
-    # user                = models.ForeignKey(custom_user, on_delete=models.CASCADE)
+    # customer            = models.ForeignKey(custom_user, on_delete=models.CASCADE)
     # book_in_cart        = models.ForeignKey(Book, on_delete=models.CASCADE)
     
 
 # class CartOrder(models.Model):
     
 #     user                 = models.ForeignKey(custom_user, on_delete=models.CASCADE)
-#     books                = models.ManyToMany(Book, on_delete=models.CASCADE)
+#     books                = models.ManyToMany(BooksInCart, on_delete=models.CASCADE)
 #     total                = models.CharField()    
