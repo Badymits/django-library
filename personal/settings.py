@@ -116,7 +116,10 @@ ROOT_URLCONF = 'personal.urls'
 
 # access environment variables
 env = environ.Env()
+
+# locate path to env file
 environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')
+
 SECRET_KEY = env('SECRET_KEY')
 
 TEMPLATES = [
