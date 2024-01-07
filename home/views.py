@@ -49,7 +49,7 @@ class BookSearchListView(mixins.ListModelMixin, generics.GenericAPIView):
         # retrieve url parameter
         query_param = self.request.query_params.get('key')
         
-        # use the url paramter to filter books based on url param
+        # use the url paramter to filter books by any of its fields
         qs_filtered = Book.objects.filter(
             Q(title__icontains=query_param) |
             Q(author__name__icontains=query_param) |
@@ -60,6 +60,6 @@ class BookSearchListView(mixins.ListModelMixin, generics.GenericAPIView):
         return qs_filtered
     
         
-    
-    
+# class AddBookToCart(generics.CreateAPIView, mixins.CreateModelMixin):
+#     pass
     
