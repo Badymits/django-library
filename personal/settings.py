@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # internal apps
     'home',
     'accounts',
+    'payments',
     
     # external and rest framework related apps
     'rest_framework',
@@ -120,6 +121,7 @@ env = environ.Env()
 # locate path to env file
 environ.Env.read_env(env_file=str(BASE_DIR) + '/.env')
 
+PUB_KEY = env('Publishable_key')
 SECRET_KEY = env('SECRET_KEY')
 
 TEMPLATES = [
