@@ -71,6 +71,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     username                = models.CharField(max_length=30)
     date_joined             = models.DateTimeField(verbose_name='date joined', auto_now_add=True) # auto now add refers to the first time that this field was updated
     last_login              = models.DateTimeField(verbose_name='last login', auto_now=True) # unlike the auto now add, this refers to each and every time this field was updated, not only the first time
+    profile_pic             = models.ImageField(upload_to='images', blank=True, null=True)
+    bio                     = models.CharField(max_length=255, null=True, blank=True)
     
     # all these fields are required if using a custom user model
     is_admin                = models.BooleanField(default=False)
