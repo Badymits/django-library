@@ -1,9 +1,12 @@
 from django.shortcuts import render
+
+from rest_framework import mixins
+from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
 
-from .serializers import AccountRegisterSerializer, AccountSerializer
+from .serializers import AccountRegisterSerializer, AccountSerializer, AccountUpdateSerializer
 from .models import Account
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -80,5 +83,53 @@ def userList(request):
     serializer = AccountSerializer(users, many=True)
     
     return Response(serializer.data)
+    
+class AccountDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+    lookup_field = 'username'
+    def get(self, request, *args, **kwargs):
+        #print('request: ',request)
+        return self.retrieve(request, *args, **kwargs)
+        
+        
+class EditAccountView(generics.GenericAPIView, mixins.UpdateModelMixin, mixins.RetrieveModelMixin):
+    
+    parser_classes = (FormParser, MultiPartParser)
+    queryset = Account.objects.all()
+    serializer_class = AccountUpdateSerializer
+    
+    lookup_field = 'username'
+    http_method_names = ['get', 'post', 'head', 'patch']
+    
+    def get_object(self, username):
+        
+        obj = Account.objects.get(username=username)
+        return obj
+    
+    
+    def get(self, request, *args, **kwargs):
+        
+        return self.retrieve(request, *args, **kwargs)
+    
+    # need to override this damn function to save the damn img for an existing user model for fucks sake
+    def partial_update(self, request, *args, **kwargs):
+        user = self.get_object(request.GET.get('username'))
+        img = request.FILES['image']
+        user.profile_pic = img
+        user.save()
+        
+        serializer = AccountUpdateSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=201, data=serializer.data)
+        return Response(status=400, data="Error msg")
+         
+    
+    def patch(self, request, *args, **kwargs):
+        
+        return self.partial_update(request, *args, **kwargs)
+        
+    
     
     
