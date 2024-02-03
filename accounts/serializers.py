@@ -8,43 +8,26 @@ class AccountSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Account
-        fields = ['email', 'username', 'first_name', 'last_name']
+        fields = ['email', 'username', 'first_name', 'last_name', 'bio', 'profile_pic']
+        
+    def get_photo_url(self, obj):
+        request = self.context.get('request')
+        photo_url = obj.fingerprint.url
+        return request.build_absolute_uri(photo_url)
 
-# class AccountLoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Account
+class AccountUpdateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Account
+        fields = ['bio', 'profile_pic']
         
-#         email = serializers.CharField(max_length=255)
-#         password = serializers.CharField(
-#             label=("Password"),
-#             style={'input_type': 'password'},
-#             trim_whitespace=False,
-#             max_length=128,
-#             read_only=True
-        
-#         )
-        
-#     def validate(self, data):
-#         user_email = data.get('email')
-#         user_password = data.get('password')
-        
-#         # validation goes thru if user has provided/entered their credentials
-#         if user_email and user_password:
-#             user = authenticate(email=user_email, password=user_password)
-            
-#             # display error
-#             if not user:
-#                 msg = ('Unable to log in with provided credentials.')
-#                 raise serializers.ValidationError(msg, code='authorization')
-        
-#         else:
-#             msg = ('Must include "username" and "password".')
-#             raise serializers.ValidationError(msg, code='authorization')
-        
-#         # return authenticated user
-#         data['user'] = user
-#         return data
-
+    
+    def get_photo_url(self, obj):
+        request = self.context.get('request')
+        photo_url = obj.fingerprint.url
+        return request.build_absolute_uri(photo_url)
+    
+    
 class AccountRegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
