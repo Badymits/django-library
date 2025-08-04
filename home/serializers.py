@@ -22,6 +22,7 @@ class BookSerializer(serializers.ModelSerializer):
     
     # many to many fields require many= parameter. By doing this, drf will show the actual object instead of null
     genre           = GenreSerializer(read_only=True, many=True)
+
     
     class Meta:
         model = Book
@@ -30,5 +31,5 @@ class BookSerializer(serializers.ModelSerializer):
     # to return in response the full url of the image
     def get_photo_url(self, obj):
         request = self.context.get('request')
-        photo_url = obj.fingerprint.url
+        photo_url = obj.book_image.url
         return request.build_absolute_uri(photo_url)

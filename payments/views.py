@@ -11,7 +11,7 @@ import stripe
 
 
 stripe.api_key = settings.SECRET_KEY
-#print(stripe.api_key)
+print(stripe.api_key)
 
 @api_view(['POST', 'GET'])
 def test_payment(request):
